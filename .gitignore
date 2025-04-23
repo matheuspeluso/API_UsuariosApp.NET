@@ -1,0 +1,77 @@
+# Arquivos gerados pelo Visual Studio e .NET CLI
+## Binários e diretórios de compilação
+bin/
+obj/
+
+## Arquivos temporários
+*.tmp
+*.log
+*.user
+*.vspscc
+*.vssscc
+
+## Arquivos de configuração local
+*.suo
+*.userprefs
+*.userosscache
+.vs/
+.idea/
+
+## Arquivos de pacotes NuGet
+*.nupkg
+packages/
+**/Properties/PublishProfiles/
+**/Properties/launchSettings.json
+
+## Arquivos gerados pelo IIS
+*.pubxml
+*.publish.xml
+
+## Logs e dados de cache
+logs/
+**/logs/
+**/LogFiles/
+**/artifacts/
+
+## Arquivos de ambiente local
+.env
+.env.local
+.env.*.local
+
+## Arquivos específicos de sistemas operacionais
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*.swp
+*~
+
+## Ferramentas e IDEs
+# Rider
+.idea/
+*.dll
+*.pdb
+*.exe
+
+# Visual Studio Code
+.vscode/
+**/.vscode/*
+
+# Resharper
+_ReSharper.*
+*.ReSharper
+
+# DotCover
+*.dotCover
+
+# NCover
+*.ncrunchsolution
+*.ncrunchproject
+
+# SonarQube
+.sonarqube/
