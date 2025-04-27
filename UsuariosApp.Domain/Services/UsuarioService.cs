@@ -1,4 +1,5 @@
 ﻿using UsuariosApp.Domain.Helpers;
+using UsuariosApp.Domain.Interfaces.Messages;
 using UsuariosApp.Domain.Interfaces.Repositories;
 using UsuariosApp.Domain.Interfaces.Services;
 using UsuariosApp.Domain.Models.Dtos;
@@ -12,13 +13,15 @@ namespace UsuariosApp.Domain.Services
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioMessage _usuarioMessage;
 
         /// <summary>
         /// Construtor para injeção de dependência (inicialização dos atributos)
         /// </summary>
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+        public UsuarioService(IUsuarioRepository usuarioRepository, IUsuarioMessage usuarioMessage)
         {
             _usuarioRepository = usuarioRepository;
+            _usuarioMessage = usuarioMessage;
         }
 
         public CriarUsuarioResponseDto CriarUsuario(CriarUsuarioRequestDto request)
@@ -37,8 +40,22 @@ namespace UsuariosApp.Domain.Services
                 Senha = CryptoHelper.EncryptSHA256(request.Senha)
             };
 
+            //gravando usuario no banco de dados
             _usuarioRepository.Adicionar(usuario);
 
+            //enviar os dados para a mensageria
+            var usuarioMessage = new UsuarioMessageDto
+            {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                DataHoraCadastro = DateTime.Now,
+            };
+
+            //salvar os dados do usuário na fila de mensageria
+            _usuarioMessage.EnviarMensagem(usuarioMessage);
+
+            //dados de resposta
             var response = new CriarUsuarioResponseDto
             {
                 Id = usuario.Id,
