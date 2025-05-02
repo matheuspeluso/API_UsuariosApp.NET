@@ -47,9 +47,24 @@ namespace UsuariosApp.API.Controllers
         /// Serviço para autenticação de usuário na API
         /// </summary>
         [HttpPost("autenticar")]
-        public IActionResult Autenticar()
+        public IActionResult Autenticar([FromBody] AutenticarUsuarioRequestDto request)
         {
-            return Ok();
+            try
+            {
+                var response = _usuarioService.AutenticarUsuario(request);
+                return StatusCode(200, new
+                {
+                    Message = "Usuário autenticado com sucesso",//mensagem
+                    Data = response //dados do usuário autenticado
+                });
+            }catch(ApplicationException e)
+            {
+                return StatusCode(401, new {e.Message});//UNAUTHORIZED (acesso não autorizado
+            }catch(Exception e)
+            {
+                return StatusCode(500, new { e.Message });
+                //INTERNAL SERVER ERROR (erro do servidor).
+            }
         }
 
 

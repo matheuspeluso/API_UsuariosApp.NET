@@ -25,5 +25,17 @@ namespace UsuariosApp.Infra.Data.Repositories
                     .Any();
             }
         }
+
+        public Usuario? Obter(string email, string senha)
+        {
+            using (var dataContext = new DataContext())
+            {
+                return dataContext
+                    .Set<Usuario>()
+                    .Where(u=> u.Email.Equals(email)
+                        && u.Senha.Equals(senha))
+                    .FirstOrDefault();
+            }
+        }
     }
 }

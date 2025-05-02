@@ -66,5 +66,28 @@ namespace UsuariosApp.Domain.Services
 
             return response; //retornando os dados da resposta
         }
+
+
+        public AutenticarUsuarioResponseDto AutenticarUsuario(AutenticarUsuarioRequestDto request)
+        {
+            //consultando os dados do usuário no banco de dados através do email e da senha
+            var usuario = _usuarioRepository.Obter(request.Email, CryptoHelper.EncryptSHA256(request.Senha));
+
+            //verficando se o usuário não foi encontrado
+            if(usuario == null)
+                throw new ApplicationException("Acesso negado. Usuário não encontrado");
+
+            //Retornar os dados do usuário autenticado
+            var response = new AutenticarUsuarioResponseDto
+            {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                DataHoraAcesso = DateTime.Now,
+                Token = JwtHelper.CreateToken(usuario) //gerando o TOKEN JWT
+            };
+
+            return response;
+        }
     }
 }
